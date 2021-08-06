@@ -1,0 +1,20 @@
+<div class=><h2><%= @list.name %></h2>
+
+<div class="row my-2">
+  <% @list.movies.each do |movie| %>
+    <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+      <div class="card" style="width: 18rem;">
+        <%= image_tag movie.poster_url, alt: movie.title, class: 'movie-img rounded-top' %>
+        <div class="card-body">
+          <strong><%= movie.title %> <span class="text-muted font-weight-normal">• <%= movie.rating %> <i class="fas fa-star star-yellow"></i></span></strong>
+          <div>
+            <i class="fas fa-quote-left mr-2"></i><small class="flex-grow-1"><%= bookmark.comment %></small>
+            <small class="text-right flex-shrink-0"><%= link_to 'delete', bookmark_path(bookmark), method: :delete, data: { confirm: "Are you sure you want to remove #{movie.title} from your #{@list.name} list"}, class: 'text-danger' %></small>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>
+
+<p class="btn btn-danger"><%= link_to "Create a bookmark", new_list_bookmark_path(@list) %></p>
+<p><%= link_to "Back", lists_path %></p>
